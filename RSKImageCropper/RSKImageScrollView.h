@@ -47,11 +47,18 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol ZoomingDelegate;
+
 @interface RSKImageScrollView : UIScrollView
 
+@property (nonatomic, weak) id <ZoomingDelegate> zoomingDelegate;
 @property (nonatomic, strong) UIImageView *zoomView;
 @property (nonatomic, assign) BOOL aspectFill;
 
 - (void)displayImage:(UIImage *)image;
 
+@end
+
+@protocol ZoomingDelegate <NSObject>
+- (void)didZoom:(RSKImageScrollView *)imageScrollView;
 @end

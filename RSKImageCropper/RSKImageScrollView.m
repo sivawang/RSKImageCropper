@@ -113,6 +113,10 @@
 - (void)scrollViewDidZoom:(__unused UIScrollView *)scrollView
 {
     [self centerZoomView];
+    
+    if (_zoomingDelegate){
+        [_zoomingDelegate didZoom:self];
+    }
 }
 
 #pragma mark - Center zoomView within scrollView

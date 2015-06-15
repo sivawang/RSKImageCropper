@@ -43,7 +43,7 @@ static const CGFloat kLandscapeCancelAndChooseButtonsVerticalMargin = 12.0f;
 static const CGFloat kResetAnimationDuration = 0.4;
 static const CGFloat kLayoutImageScrollViewAnimationDuration = 0.25;
 
-@interface RSKImageCropViewController () <UIGestureRecognizerDelegate>
+@interface RSKImageCropViewController () <UIGestureRecognizerDelegate, ZoomingDelegate>
 
 @property (assign, nonatomic) BOOL originalNavigationControllerNavigationBarHidden;
 @property (strong, nonatomic) UIImage *originalNavigationControllerNavigationBarShadowImage;
@@ -263,6 +263,7 @@ static const CGFloat kLayoutImageScrollViewAnimationDuration = 0.25;
         _imageScrollView = [[RSKImageScrollView alloc] init];
         _imageScrollView.clipsToBounds = NO;
         _imageScrollView.aspectFill = self.avoidEmptySpaceAroundImage;
+        _imageScrollView.zoomingDelegate = self;
     }
     return _imageScrollView;
 }
@@ -303,6 +304,8 @@ static const CGFloat kLayoutImageScrollViewAnimationDuration = 0.25;
         _moveAndScaleLabel.backgroundColor = [UIColor clearColor];
         _moveAndScaleLabel.text = NSLocalizedString(@"Move and Scale", @"Move and Scale label");
         _moveAndScaleLabel.textColor = [UIColor whiteColor];
+        _moveAndScaleLabel.numberOfLines = 0;
+        _moveAndScaleLabel.textAlignment = NSTextAlignmentCenter;
         _moveAndScaleLabel.opaque = NO;
     }
     return _moveAndScaleLabel;
@@ -872,4 +875,13 @@ static const CGFloat kLayoutImageScrollViewAnimationDuration = 0.25;
     return YES;
 }
 
+#pragma mark - ZoomingDelegate
+
+- (void)didZoom:(RSKImageScrollView *)imageScrollView
+{
+    CGRect cropRect = self.cropRect;
+    
+    NSString *format = NSLocalizedString(@"Move and Scale\n%.0fx%.0f", @"Move and Scale label");
+    _moveAndScaleLabel.text = [NSString stringWithFormat:format, cropRect.size.width, cropRect.size.height];
+}
 @end

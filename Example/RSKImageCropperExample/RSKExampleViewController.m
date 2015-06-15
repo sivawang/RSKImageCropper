@@ -162,6 +162,8 @@ static const CGFloat kPhotoDiameter = 130.0f;
 
 - (void)imageCropViewController:(RSKImageCropViewController *)controller didCropImage:(UIImage *)croppedImage usingCropRect:(CGRect)cropRect
 {
+    NSLog(@"croppedImage=%@", croppedImage);
+    
     [self.addPhotoButton setImage:croppedImage forState:UIControlStateNormal];
     [self.navigationController popViewControllerAnimated:YES];
 }
